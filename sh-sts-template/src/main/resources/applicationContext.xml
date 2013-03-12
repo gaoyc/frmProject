@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xmlns:tx="http://www.springframework.org/schema/tx"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                     http://www.springframework.org/schema/aop
+                     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                     http://www.springframework.org/schema/tx
+                     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+    <!-- 开启annotation注解 -->
+    <context:annotation-config/>
+    <!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 -->   
+    <context:component-scan base-package="com.icitic.avp.bean.hbm.pojo"/>
+    
+    <!-- 指定属性配置文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!-- 
+        <property name="locations" value="classpath:driver.properties"/>
+        -->
+        <property name="locations" value="classpath:hibernate.properties"/>
+  </bean>
+  
+  
+  <!-- JNDI 方式DATASOURCE -->
+  <beans>
+	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/IC_DATASOURCE"/>
+  </beans>
+  
+
+  <!--
+  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+     <property name="driverClassName" value="${driverClassName}"/>
+     <property name="url" value="${url}"/>
+     <property name="username" value="${user}"/>
+     <property name="password" value="${password}"/>
+  </bean>
+  -->
+  
+
+
+  
+  <!--SessionFactory Description --> 
+  <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean"   autowire="autodetect"> -->
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+     <property name="dataSource" ref="dataSource" />
+     <property name="packagesToScan">
+        <list>
+          <value>com.icitic.avp.bean.hbm.pojo</value>        
+        </list>
+     </property>
+     <property name="hibernateProperties">
+         <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+            <prop key="hibernate.show_sql">true</prop>
+            <prop key="hibernate.format_sql">true</prop>
+         </props>
+     </property>
+  </bean>
+  
+  <!--HinerbateTemplate Description -->
+  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  
+  <!--Transaction Description -->
+  <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+     <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  
+  
+  <!--Transaction Advice Desctiption -->
+  <!-- 
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+         <tx:method name="is*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+             <tx:method name="find*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>            
+            <tx:method name="upda*"/>
+        </tx:attributes>
+     </tx:advice>
+  
+  <aop:config>
+    <aop:pointcut    id="transactionPointcut" expression="execution(public * com.icitic.avp.services.*.*(..))" />
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointcut"/>
+  </aop:config>
+  -->  
+  
+  
+  
+  <!-- 应用 Bean 配置 - Biz bean or DAO bean-->
+  <bean id="beanDaoImpl" class="com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoImpl">
+    <property name="sessionFactory" ref="sessionFactory"></property>
+  </bean>
+  <bean id="beanDaoHibernateTmplateImpl" class="com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoHibernateTmplateImpl">
+    <property name="hibernateTemplate" ref="hibernateTemplate"></property>
+  </bean>
+  
+  <bean id="beanDaoHibernateDaoSupportImpl" class="com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoHibernateDaoSupportImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  
+  
+</beans>

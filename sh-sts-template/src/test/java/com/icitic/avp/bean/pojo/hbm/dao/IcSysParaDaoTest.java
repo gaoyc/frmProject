@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -17,6 +18,8 @@ import com.icitic.avp.bean.hbm.pojo.IcSysPara;
 import com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoHibernateDaoSupportImpl;
 import com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoHibernateTmplateImpl;
 import com.icitic.avp.bean.hbm.pojo.dao.IcSysParaDaoImpl;
+import com.kigo.tmplate.frm.common.service.hbm.ICommonServiceHbm;
+import com.kigo.tmplate.frm.hbm.dao.impl.GenericBaseHibernateDAO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +40,41 @@ public class IcSysParaDaoTest {
     
 	@Autowired
 	private SessionFactory sessionFactory; //使用hibernate原生DAO
+	
+	@Autowired
+//    @Qualifier("genericBaseHibernateDAO")
+	private GenericBaseHibernateDAO<IcSysPara, Long> genericBaseHibernateDAO;
+	
+	@Autowired
+    @Qualifier("iCommonServiceHbm")
+	private ICommonServiceHbm<IcSysPara, Long> iCommonServiceHbmImpl;
+	
     
+	
+	
+	
+	@Test
+	public void testICommonServiceHbm() {
+		System.err.println("iCommonServiceHbmImpl is null :"+(iCommonServiceHbmImpl==null));
+		List<IcSysPara> IcSysParas = iCommonServiceHbmImpl.findAll(IcSysPara.class);
+		
+		for (IcSysPara icSysPara : IcSysParas) {
+			System.out.println("iCommonServiceHbmImpl: "+icSysPara.getParameterIndex()+"\t value:"+icSysPara.getParameterValue());
+		}
+		
+	}
+	
+    @Test
+    public void testGenericBaseHibernateDAO() {
+    	System.err.println("genericBaseHibernateDAO is null :"+(genericBaseHibernateDAO==null));
+		List<IcSysPara> IcSysParas = genericBaseHibernateDAO.findAll(IcSysPara.class);
+		
+		for (IcSysPara icSysPara : IcSysParas) {
+			System.out.println(icSysPara.getParameterIndex()+"\t value:"+icSysPara.getParameterValue());
+		}
+        
+    }
+	
 	
     @Test
     public void testAddBean() {
@@ -90,11 +127,7 @@ public class IcSysParaDaoTest {
     
     @Test
     public void testList() {
-
-        
-    	
     	System.err.println("beanDaoImpl is null :"+(beanDaoImpl==null));
-    	
 		List<IcSysPara> IcSysParas = beanDaoImpl.fetchAll();
 		
 		for (IcSysPara icSysPara : IcSysParas) {

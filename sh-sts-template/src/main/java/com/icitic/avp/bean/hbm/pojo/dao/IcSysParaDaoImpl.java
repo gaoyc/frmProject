@@ -1,6 +1,9 @@
 package com.icitic.avp.bean.hbm.pojo.dao;
 
-import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.googlecode.genericdao.dao.hibernate.original.GenericDAOImpl;
 import com.icitic.avp.bean.hbm.pojo.IcSysPara;
@@ -18,13 +21,17 @@ import com.icitic.avp.bean.hbm.pojo.IcSysPara;
  * @version   1.0
  * @date 2013-3-8下午04:29:52
  */
+@Component("IcSysParaDaoImpl")
 public class IcSysParaDaoImpl extends GenericDAOImpl<IcSysPara, String> implements IcSysParaDao  {
+
+    @Autowired
+    @Qualifier("sessionFactory")
+	@Override
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		// TODO Auto-generated method stub
+		super.setSessionFactory(sessionFactory);
+	}
 	
-	   protected Session getHibernateSession()
-	   {
-	     return getSession();
-	   }
-	   
 	   
 	
 }

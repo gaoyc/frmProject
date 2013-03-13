@@ -28,12 +28,6 @@ import com.kigo.tmplate.frm.hbm.dao.IBaseDao;
 import com.kigo.tmplate.frm.hbm.dao.util.ConditionQuery;
 import com.kigo.tmplate.frm.hbm.dao.util.OrderBy;
 
-/**
- * 
- * @author Zhang Kaitao
- *
- * @version 1.0, 2010-8-12
- */
 public abstract class BaseHibernateDao<M extends java.io.Serializable, PK extends java.io.Serializable> implements IBaseDao<M, PK> {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BaseHibernateDao.class);

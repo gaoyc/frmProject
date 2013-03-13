@@ -14,8 +14,11 @@
                      http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
     <!-- 开启annotation注解 -->
     <context:annotation-config/>
-    <!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 -->   
-    <context:component-scan base-package="com.icitic.avp.bean.hbm.pojo"/>
+    <!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 . 逗号分隔多个包 -->   
+    <context:component-scan base-package="com.icitic.avp.bean.hbm.pojo,com.kigo.tmplate.frm.hbm.dao,com.kigo.tmplate.frm.common.service">
+        <context:exclude-filter type="regex" expression="com\.kigo\.tmplate\.frm\.common\.util.*"/>
+    </context:component-scan>
+    
     
     <!-- 指定属性配置文件 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -25,13 +28,11 @@
         <property name="locations" value="classpath:hibernate.properties"/>
   </bean>
   
-  
   <!-- JNDI 方式DATASOURCE -->
   <beans>
 	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/IC_DATASOURCE"/>
   </beans>
   
-
   <!--
   <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
      <property name="driverClassName" value="${driverClassName}"/>
@@ -42,8 +43,6 @@
   -->
   
 
-
-  
   <!--SessionFactory Description --> 
   <!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean"   autowire="autodetect"> -->
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

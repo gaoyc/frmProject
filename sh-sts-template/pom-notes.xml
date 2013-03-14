@@ -1,0 +1,26 @@
+			<!-- 复制所需要的jar到指定目录下-->
+		    <plugin>
+	           <groupId>org.apache.maven.plugins</groupId>
+	           <artifactId>maven-dependency-plugin</artifactId>
+	           <version>2.1</version>
+	           <executions>
+	               <execution>
+	               		<!-- 
+	                   <phase>process-resources</phase>
+	                	-->
+	                   <phase>package</phase>
+	                   <goals>
+	                       <goal>copy-dependencies</goal>
+	                   </goals>
+	                   <configuration>
+	                       <type>jar</type>
+	                       <!-- 将那些级别的jar排除在复制之外
+	                       <excludeScope>provided</excludeScope>
+	                       <includeScope>runtime</includeScope>
+	                        -->
+	                       <overWriteIfNewer>true</overWriteIfNewer>
+	                       <outputDirectory>${project.build.directory}/lib</outputDirectory>
+	                   </configuration>
+	               </execution>
+	           </executions>
+	          </plugin>

@@ -139,6 +139,22 @@
         	<scope>compile</scope>
         </dependency>
 		<!-- end add for com.kigo.tmplate.frm.common.pagination.model2.NavigationTagV2 分页依赖 -->
+		<!-- hibernate 缓存 -->
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-ehcache</artifactId>
+        	<version>3.6.10.Final</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+        	<groupId>org.aspectj</groupId>
+        	<artifactId>aspectjtools</artifactId>
+        	<version>1.6.2</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
+        </dependency>
 		<!-- add by kigo. sts 生成模板工程之后添加 依赖 -->
 	</dependencies>
 

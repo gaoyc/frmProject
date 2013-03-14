@@ -1,0 +1,2 @@
+1初次运行时候，可以修改hibernate.properties中如下配置为create,自动建库建表,创建完表后再修改为合适值
+hibernate.hbm2ddl.auto=none

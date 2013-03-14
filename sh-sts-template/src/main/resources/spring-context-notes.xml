@@ -1,3 +1,5 @@
+  <import resource="classpath:/META-INF/spring/app-context.xml" />
+  
   <!-- JNDI 方式DATASOURCE -->
   <beans>
 	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/IC_DATASOURCE"/>
